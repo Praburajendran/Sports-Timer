@@ -1,0 +1,48 @@
+<!-- <ag-grid-angular 
+style="width: 1500px; height: 500px;" 
+class="ag-theme-balham"
+[rowData]="rowData" 
+[columnDefs]="columnDefs"
+>
+</ag-grid-angular> -->
+
+<div id='posdiv' ng-if="finishedData?.length > 1">
+  <h2> Positions after completion of Race</h2>
+  <table id='position'>
+    <thead>
+    <th>Athlete Name</th>
+    <th>Athlete Number</th>
+    <th>Finish Start Time</th>
+    <th>Finish End Time</th>
+    <th>Position</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let athlete of finishedData">
+    <td>{{athlete.athlName}}</td>
+    <td>{{athlete.athlNum}}</td>
+    <td>{{athlete.finishStartTime}}</td>
+    <td>{{athlete.finishEndTime}}</td>
+    <th>{{athlete.position}}</th>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div id='statusdiv' ng-if="statusData?.length > 1">
+<h2> Status of Race</h2>
+<table id='status'>
+  <thead>
+  <th>Athlete Name</th>
+  <th>Athlete Number</th>
+  <th>Finish Start Time</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let athlete of statusData">
+  <td>{{athlete.athlName}}</td>
+  <td>{{athlete.athlNum}}</td>
+  <td>{{athlete.finishStartTime}}</td>
+  </tr>
+  </tbody>
+</table>
+</div>
