@@ -16,7 +16,7 @@ export class SportsTimerComponent implements OnInit {
 
   public title = 'sport-timer';
   public statusData = [];
-  public finishedData = [];
+  public finishedData = new Set();
   public bSubject;
   public athlPos = 1;
 
@@ -40,41 +40,53 @@ export class SportsTimerComponent implements OnInit {
      // this.bSubject.next(data);
 
      if(data["length"] !== 1 ) return;
-     if(data[0].reader_id === 15) {
+     if(data[0].reader_id === 21) {
       let startObj = {};
       startObj["athlName"] = data[0]["athlete"]["name"];
       startObj["athlNum"] = data[0]["athlete"]["number"];
-      startObj["finishStartTime"] = new Date(data[0]["timestamp"]).toString();
+      startObj["finishStartTime"] = this.calculateTime(new Date(data[0]["timestamp"]));
       //obj["finishEndTime"] = data[0]["timestamp"];
 
       //this.statusData.push(startObj);
       this.statusData.unshift(startObj);
-     } else if(data[0].reader_id === 16) {
+     } else if(data[0].reader_id === 22) {
       let athleteNum= data[0]["athlete"]["number"];
 
       let currIndex;
       this.statusData.forEach((athlete, index) => {
         if(athlete.athlNum === athleteNum){
           currIndex = index;
-          athlete["finishEndTime"] = new Date(data[0]["timestamp"]).toString();
-          athlete["position"] = this.athlPos++;
+          athlete["position"] = this.athlPos++;  
+          athlete["finishEndTime"] = this.calculateTime(new Date(data[0]["timestamp"]));
         }
       })
-      let selectedItem = this.statusData.splice(currIndex,1);
-      this.finishedData.push(selectedItem[0]);
+
+      if(typeof currIndex !== 'undefined'){
+        let selectedItem = this.statusData.splice(currIndex,1);
+        this.bSubject.next(selectedItem);
+  
+        this.bSubject.subscribe(data => {
+          let finishObj = data[0];
+          console.log(data);
+          if(data.length === 0) return;
+          //finishObj["finishEndTime"] = this.calculateTime(new Date(data[0]["timestamp"]));
+          this.finishedData.add(finishObj);
+        });
+      }
+
+      //this.finishedData.push(selectedItem[0]);
      }
     });
 
-    // this.bSubject.subscribe(data => {
-    //   console.log(data);
-    //   if(data.length === 0) return;
-    //   let obj = {};
-    //   obj["athlName"] = data[0]["athlete"]["name"];
-    //   obj["athlNum"] = data[0]["athlete"]["number"];
-    //   obj["finishStartTime"] = data[0]["captured"];
-    //   obj["finishEndTime"] = data[0]["timestamp"];
-
-    //   this.statusData.push(obj);
-    // });
   }
+  
+  calculateTime(dateval) {
+    let hour =  ("0" + dateval.getHours()).slice(-2); 
+    let minute = ("0" + dateval.getMinutes()).slice(-2); 
+    let second = ("0" + dateval.getSeconds()).slice(-2); 
+    let millisec = ("00" + dateval.getMilliseconds()).slice(-3); 
+
+    return hour + ':' + minute + ':' + second + ':' + millisec;
+  }
+
 }
