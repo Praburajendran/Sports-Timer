@@ -1,0 +1,13 @@
+{
+    "name": "sports-timer-server",
+    "version": "0.0.1",
+    "description": "Sports Timer Server App",
+    "dependencies": {
+        "bluebird": "^3.5.4",
+        "body-parser": "^1.18.3",
+        "cors": "^2.8.5",
+        "express": "^4.15.2",
+        "mongoose": "^5.5.1",
+        "socket.io": "^2.2.0"
+    }
+}
