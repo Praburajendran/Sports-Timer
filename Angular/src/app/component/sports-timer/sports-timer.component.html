@@ -6,9 +6,30 @@ class="ag-theme-balham"
 >
 </ag-grid-angular> -->
 
-<div id=container>
+<div class="flex-container">
 
-<div id='posdiv' ng-if="finishedData?.length > 1">
+
+<div class='statusdiv' ng-if="statusData?.length > 1">
+<h2> Status of Race</h2>
+<table id='status'>
+  <thead>
+  <th>Athlete Name</th>
+  <th>Athlete Number</th>
+  <th>Finish Start Time</th>
+  <th>Status</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let athlete of statusData">
+  <td>{{athlete.athlName}}</td>
+  <td>{{athlete.athlNum}}</td>
+  <td>{{athlete.finishStartTime}}</td>
+  <td>{{athlete.status}}</td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div class='posdiv' ng-if="finishedData?.length > 1">
   <h2> Positions after completion of Race</h2>
   <table id='position'>
     <thead>
@@ -28,26 +49,5 @@ class="ag-theme-balham"
     </tr>
     </tbody>
   </table>
-</div>
-
-
-<div id='statusdiv' ng-if="statusData?.length > 1">
-<h2> Status of Race</h2>
-<table id='status'>
-  <thead>
-  <th>Athlete Name</th>
-  <th>Athlete Number</th>
-  <th>Finish Start Time</th>
-  <th>Status</th>
-  </thead>
-  <tbody>
-  <tr *ngFor="let athlete of statusData">
-  <td>{{athlete.athlName}}</td>
-  <td>{{athlete.athlNum}}</td>
-  <td>{{athlete.finishStartTime}}</td>
-  <td>{{athlete.status}}</td>
-  </tr>
-  </tbody>
-</table>
 </div>
 </div>

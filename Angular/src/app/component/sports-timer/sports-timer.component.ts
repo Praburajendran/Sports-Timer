@@ -45,8 +45,10 @@ export class SportsTimerComponent implements OnInit {
 
   handleVisibilityChange = () => {
     if (document[this.hidden]) {
+      console.log(' i am inside unsubscribe')
         this.getCapSrvc.unsubscribe();
     } else {
+      console.log('subscribing again')
       this.getCaptureData();
     }
   }
