@@ -38,12 +38,14 @@ class="ag-theme-balham"
   <th>Athlete Name</th>
   <th>Athlete Number</th>
   <th>Finish Start Time</th>
+  <th>Status</th>
   </thead>
   <tbody>
   <tr *ngFor="let athlete of statusData">
   <td>{{athlete.athlName}}</td>
   <td>{{athlete.athlNum}}</td>
   <td>{{athlete.finishStartTime}}</td>
+  <td>{{athlete.status}}</td>
   </tr>
   </tbody>
 </table>

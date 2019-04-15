@@ -7,7 +7,6 @@ export class UtilitiesService {
 
   constructor() { }
 
-    
   calculateTime(dateval) {
     let hour =  ("0" + dateval.getHours()).slice(-2); 
     let minute = ("0" + dateval.getMinutes()).slice(-2); 
@@ -18,17 +17,17 @@ export class UtilitiesService {
   }
 
   addVisibility() {
-    let visibilityObj;
+    let hidden, visibilityChange;
     if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
-      visibilityObj["hidden"] = "hidden";
-      visibilityObj["visibilityChange"] = "visibilitychange";
+        hidden = "hidden";
+        visibilityChange = "visibilitychange";
     } else if (typeof document["msHidden"] !== "undefined") {
-      visibilityObj["hidden"] = "msHidden";
-      visibilityObj["visibilityChange"] = "msvisibilitychange";
+      hidden = "msHidden";
+      visibilityChange = "msvisibilitychange";
     } else if (typeof document["webkitHidden"] !== "undefined") {
-      visibilityObj["hidden"] = "webkitHidden";
-      visibilityObj["visibilityChange"] = "webkitvisibilitychange";
+      hidden = "webkitHidden";
+      visibilityChange = "webkitvisibilitychange";
     }
-    return visibilityObj;
+    return { hidden: hidden, visibilityChange: visibilityChange }
   }
 }

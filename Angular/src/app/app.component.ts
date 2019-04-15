@@ -6,5 +6,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent{
-  public title = 'sport-timer';
+  public title = 'Sports-Timer';
 }

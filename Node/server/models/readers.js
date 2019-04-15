@@ -1,4 +1,4 @@
-//Schema for tasks Collection
+//Schema for readers Collection
 var mongoose = require('mongoose');
 
 var readerSchema = new mongoose.Schema({
@@ -6,6 +6,6 @@ var readerSchema = new mongoose.Schema({
     id: Number,
     name: String,
     position: Number
-  });
+}, { collection: 'readers' });
 
-module.exports = mongoose.model('sportstimer', readerSchema);
+module.exports = mongoose.model('readers', readerSchema);

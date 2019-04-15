@@ -16,7 +16,6 @@ export class SportsTimerComponent implements OnInit {
 
   constructor(private socksrvc: SocketConnectService, private readsrvc: GetReadersService, private utilsrvc: UtilitiesService) { }
 
-  public title = 'Sports-Timer';
   public statusData = [];
   public athlCompleted = [];
   public finishedData = new Set();
@@ -33,21 +32,19 @@ export class SportsTimerComponent implements OnInit {
       this.readers = readerresp;
       this.getCaptureData();
       let visibObj = this.utilsrvc.addVisibility();
-      this.hidden = visibObj.hidden;
+      this.hidden = visibObj["hidden"];
 
       if (typeof document.addEventListener === "undefined" || this.hidden === undefined) {
-          console.log("This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.");
+          console.log("Page Visibility API not supported");
       } else {
           // Handle page visibility change   
-          document.addEventListener(visibObj.visibilityChange, this.handleVisibilityChange, false);
+          document.addEventListener(visibObj["visibilityChange"], this.handleVisibilityChange, false);
       }
     });
   }
 
-  handleVisibilityChange = () =>{
-   console.log( ' i  am herereeeeeeee')
+  handleVisibilityChange = () => {
     if (document[this.hidden]) {
-      console.log(' i am in unsubscibe method')
         this.getCapSrvc.unsubscribe();
     } else {
       this.getCaptureData();
@@ -67,42 +64,40 @@ export class SportsTimerComponent implements OnInit {
         startObj["athlName"] = athlName;
         startObj["athlNum"] = athlNum;
         startObj["finishStartTime"] = this.utilsrvc.calculateTime(new Date(data[0]["timestamp"]));
-        //obj["finishEndTime"] = data[0]["timestamp"];
+        startObj["status"] = 'Running';
   
-        //this.statusData.push(startObj);
         this.statusData.unshift(startObj);
       } else {
-        //console.log( data[0]["athlete"]["name"])
+        console.log(data[0]["athlete"]["name"])
       }
      } else if(data[0].reader_id === this.readers[1].id) {
-      let athleteNum= data[0]["athlete"]["number"];
-
-      this.athlCompleted.push(athleteNum);
-
-      let currIndex;
-      this.statusData.forEach((athlete, index) => {
-        if(athlete.athlNum === athleteNum){
-          currIndex = index;
-          athlete["position"] = this.athlPos++;  
-          athlete["finishEndTime"] = this.utilsrvc.calculateTime(new Date(data[0]["timestamp"]));
-        }
-      })
-
-      if(typeof currIndex !== 'undefined'){
-        let selectedItem = this.statusData.splice(currIndex,1);
-        this.bSubject.next(selectedItem);
-  
-        this.bSubject.subscribe(data => {
-          let finishObj = data[0];
-          //console.log(data);
-          if(data.length === 0) return;
-          //finishObj["finishEndTime"] = this.calculateTime(new Date(data[0]["timestamp"]));
-          this.finishedData.add(finishObj);
-        });
-      }
-
-      //this.finishedData.push(selectedItem[0]);
+        this.captureFinishData(data);
      }
     });
+  }
+
+  captureFinishData(data){
+    let athleteNum= data[0]["athlete"]["number"];
+    this.athlCompleted.push(athleteNum);
+
+    let currIndex;
+    this.statusData.forEach((athlete, index) => {
+      if(athlete.athlNum === athleteNum){
+        currIndex = index;
+        athlete["position"] = this.athlPos++;  
+        athlete["finishEndTime"] = this.utilsrvc.calculateTime(new Date(data[0]["timestamp"]));
+      }
+    })
+
+    if(typeof currIndex !== 'undefined'){
+      let selectedItem = this.statusData.splice(currIndex,1);
+      this.bSubject.next(selectedItem);
+
+      this.bSubject.subscribe(data => {
+        let finishObj = data[0];
+        if(data.length === 0) return;
+        this.finishedData.add(finishObj);
+      });
+    }
   }
 }

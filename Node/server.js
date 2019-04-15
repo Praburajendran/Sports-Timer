@@ -12,19 +12,21 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
+const athleteapi = require('./server/routes/athleteapi');
+const readerapi = require('./server/routes/readerapi');
+const captureapi = require('./server/routes/captureapi');
 
-// API file for interacting with MongoDB
-const readerapi = require('./routes/readerapi');
 
-app.use('/readerapi', readerapi);
+app.use('/athletes', athleteapi);
+app.use('/readers', readerapi);
+app.use('/captures', captureapi)
 
-// Parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
+  socket.emit('message', { hello: 'message sent' });
+  socket.on('my new event', function (data) {
     console.log(data);
   });
 });

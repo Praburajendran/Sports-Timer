@@ -26,17 +26,8 @@ let response = {
 
 
 //Get tasks
-router.get('/getreaders', (req, res) => {
+router.get('/', (req, res) => {
     Readers.find(function (err, data) {
-	  if (err) return sendError(err);
-	  response.data = data;
-        res.json(response);
-	  });
-});
-
-//Get task for Id
-router.get('/getTaskforId', (req, res) => {
-    Readers.findById(req.query.index,function (err, data) {
 	  if (err) return sendError(err);
 	  response.data = data;
         res.json(response);
